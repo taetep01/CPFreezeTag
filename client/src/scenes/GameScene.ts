@@ -752,7 +752,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     const BASE_SPEED = 3.2;
-    const speed = BASE_SPEED * (myState.speedMultiplier ?? 1);
+    const baseRoleMultiplier = myState.role === "chaser" ? 1.1 : 1.0;
+    const speed = BASE_SPEED * (myState.speedMultiplier ?? baseRoleMultiplier);
 
     let dx = 0, dy = 0;
     if (this.wasd.up.isDown || this.cursors.up.isDown) dy = -1;

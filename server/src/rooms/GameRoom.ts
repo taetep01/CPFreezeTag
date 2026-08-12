@@ -288,7 +288,8 @@ export class GameRoom extends Room<GameRoomOptions> {
       p.role = i === chaserIndex ? "chaser" : "runner";
       p.frozen = false;
       p.hasShield = false;
-      p.speedMultiplier = 1;
+      // Chaser is 1.1x faster than Runners. All Runners (including Host) have 1.0x speed.
+      p.speedMultiplier = p.role === "chaser" ? 1.1 : 1.0;
       p.isGhost = false;
       p.stunned = false;
     });
@@ -412,11 +413,13 @@ export class GameRoom extends Room<GameRoomOptions> {
   // ── Item Effects ──────────────────────────────────────────────────────────
   private applyItemEffect(gs: GameState, player: PlayerState, itemType: ItemType) {
     switch (itemType) {
-      case "speed":
-        player.speedMultiplier = 1.6;
+      case "speed": {
+        const baseSpeed = player.role === "chaser" ? 1.1 : 1.0;
+        player.speedMultiplier = baseSpeed * 1.6;
         this.broadcast("message", { msg: `⚡ ${player.name} activated SPEED BOOST!` });
-        setTimeout(() => { player.speedMultiplier = 1; }, 6000);
+        setTimeout(() => { player.speedMultiplier = baseSpeed; }, 6000);
         break;
+      }
 
       case "ghost":
         player.isGhost = true;
