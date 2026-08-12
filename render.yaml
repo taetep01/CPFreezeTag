@@ -2,7 +2,7 @@ services:
   - type: web
     name: cpfreezetag
     env: node
-    buildCommand: npm run install:all && npm run build
+    buildCommand: npm run build
     startCommand: npm run start
     envVars:
       - key: NODE_VERSION
