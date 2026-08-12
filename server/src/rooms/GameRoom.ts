@@ -314,13 +314,17 @@ export class GameRoom extends Room<GameRoomOptions> {
   private startItemSpawner(gs: GameState) {
     this.itemSpawnInterval = setInterval(() => {
       if (gs.phase !== "playing") return;
-      if (gs.items.size < 6) {
-        const types: ItemType[] = ["speed", "ghost", "shield", "heater", "banana", "blackhole"];
+      if (gs.items.size < 8) {
+        // Higher drop rate for banana peels (3x weight)
+        const types: ItemType[] = [
+          "banana", "banana", "banana",
+          "speed", "ghost", "shield", "heater", "blackhole"
+        ];
         const t = types[Math.floor(Math.random() * types.length)];
         const sp = randomSpawn();
         this.spawnItem(t, sp.x, sp.y);
       }
-    }, 8000);
+    }, 5000);
   }
 
   private ensureValidPosition(player: PlayerState) {
