@@ -15,13 +15,13 @@ const gameServer = new Server({
 
     app.use(express.static(clientBuildPath));
 
-    app.get("*", (req, res, next) => {
-      if (req.path.startsWith("/colyseus") || req.path.startsWith("/matchmake")) {
-        return next();
+    app.use((req, res, next) => {
+      if (req.method === "GET" && !req.path.startsWith("/colyseus") && !req.path.startsWith("/matchmake")) {
+        return res.sendFile(path.join(clientBuildPath, "index.html"), (err) => {
+          if (err) next();
+        });
       }
-      res.sendFile(path.join(clientBuildPath, "index.html"), (err) => {
-        if (err) next();
-      });
+      next();
     });
   },
 });
