@@ -315,12 +315,35 @@ export class GameRoom extends Room<GameRoomOptions> {
     this.itemSpawnInterval = setInterval(() => {
       if (gs.phase !== "playing") return;
       if (gs.items.size < 6) {
-        const types: ItemType[] = ["speed", "ghost", "shield", "heater", "blackhole"];
+        const types: ItemType[] = ["speed", "ghost", "shield", "heater", "banana", "blackhole"];
         const t = types[Math.floor(Math.random() * types.length)];
         const sp = randomSpawn();
         this.spawnItem(t, sp.x, sp.y);
       }
     }, 8000);
+  }
+
+  private ensureValidPosition(player: PlayerState) {
+    const map = buildMap();
+    const c = Math.floor(player.x / TILE_SIZE);
+    const r = Math.floor(player.y / TILE_SIZE);
+
+    if (r <= 0 || r >= MAP_H - 1 || c <= 0 || c >= MAP_W - 1 || map[r][c] === 1) {
+      const validSpawns = getValidSpawns();
+      let nearest = validSpawns[0];
+      let minD = Infinity;
+      for (const sp of validSpawns) {
+        const d = (sp.x - player.x) ** 2 + (sp.y - player.y) ** 2;
+        if (d < minD) {
+          minD = d;
+          nearest = sp;
+        }
+      }
+      player.x = nearest.x;
+      player.y = nearest.y;
+      this.broadcast("player_teleported", { playerId: player.id, x: nearest.x, y: nearest.y });
+      this.broadcast("message", { msg: `👻 ${player.name} emerged safely out of wall!` });
+    }
   }
 
   private spawnItem(itemType: string, x: number, y: number) {
@@ -424,7 +447,10 @@ export class GameRoom extends Room<GameRoomOptions> {
       case "ghost":
         player.isGhost = true;
         this.broadcast("message", { msg: `👻 ${player.name} activated GHOST MODE!` });
-        setTimeout(() => { player.isGhost = false; }, 5000);
+        setTimeout(() => {
+          player.isGhost = false;
+          this.ensureValidPosition(player);
+        }, 5000);
         break;
 
       case "shield":

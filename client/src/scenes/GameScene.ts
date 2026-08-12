@@ -775,6 +775,20 @@ export class GameScene extends Phaser.Scene {
       if (!myState.isGhost) {
         const radius = 14;
 
+        // If player exited ghost mode inside a wall, snap to safe server position!
+        const insideRect = new Phaser.Geom.Rectangle(this.myX - radius, this.myY - radius, radius * 2, radius * 2);
+        for (const wall of this.walls) {
+          if (Phaser.Geom.Rectangle.Overlaps(insideRect, wall)) {
+            if (myState.x && myState.y) {
+              this.myX = myState.x;
+              this.myY = myState.y;
+              nx = myState.x;
+              ny = myState.y;
+            }
+            break;
+          }
+        }
+
         // Axis X collision test & slide
         const xRect = new Phaser.Geom.Rectangle(nx - radius, this.myY - radius, radius * 2, radius * 2);
         for (const wall of this.walls) {
