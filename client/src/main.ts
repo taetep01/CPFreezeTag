@@ -6,13 +6,15 @@ import { GameScene } from "./scenes/GameScene";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 900,
-  height: 600,
+  width: 1280,
+  height: 720,
   backgroundColor: "#0d1b4b",
   scene: [MainMenuScene, HostJoinScene, LobbyScene, GameScene],
   render: {
     antialias: true,
+    antialiasGL: true,
     pixelArt: false,
+    roundPixels: false,
   },
   scale: {
     mode: Phaser.Scale.FIT,
