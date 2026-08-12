@@ -28,7 +28,13 @@ const gameServer = new Server({
 
 gameServer.define("game_room", GameRoom);
 
-gameServer.listen(PORT, "0.0.0.0", undefined, () => {
+async function start() {
+  await gameServer.listen(PORT, "0.0.0.0");
   console.log(`\n🎮 CPFreezetag Server running on 0.0.0.0:${PORT}`);
   console.log(`🖥️  Serving static client from ${clientBuildPath}`);
+}
+
+start().catch((err) => {
+  console.error("❌ Failed to start server:", err);
+  process.exit(1);
 });
