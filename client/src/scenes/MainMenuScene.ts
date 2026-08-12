@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { GAME_VERSION } from "../version";
 
 const ICE_BLUE = 0x4fc3f7;
 // const ICE_DARK = 0x1a237e; // reserved for future use
@@ -111,7 +112,7 @@ export class MainMenuScene extends Phaser.Scene {
     }, 0x37474f, 0x546e7a);
 
     // ── Version label ────────────────────────────────────────────────────────
-    this.add.text(width / 2, height * 0.92, "v1.0.0  |  2-4 Players", {
+    this.add.text(width / 2, height * 0.92, `${GAME_VERSION}  |  2-4 Players`, {
       fontFamily: "Arial, sans-serif",
       fontSize: "14px",
       color: "#78909c",

@@ -1,14 +1,16 @@
 {
   "name": "cpfreezetag",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
+  "type": "module",
   "description": "CPFreezetag Multiplayer Web Game",
   "scripts": {
     "install:all": "npm install --prefix client && npm install --prefix server",
     "postinstall": "npm run install:all",
+    "bump": "node scripts/bump-version.js",
     "build:client": "npm run build --prefix client",
     "build:server": "npm run build --prefix server",
-    "build": "npm run build:client && npm run build:server",
+    "build": "npm run bump && npm run build:client && npm run build:server",
     "start": "npm run start --prefix server"
   },
   "engines": {
