@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { GAME_VERSION } from "../version";
 import { createRoom, joinRoom } from "../network/GameClient";
 
 export class HostJoinScene extends Phaser.Scene {
@@ -28,14 +29,17 @@ export class HostJoinScene extends Phaser.Scene {
     bg.fillRect(0, 0, width, height);
 
     // Back button
-    this.add.text(30, 24, "← Back", {
-      fontFamily: "Arial, sans-serif",
-      fontSize: "18px",
-      color: "#4fc3f7",
-    }).setInteractive({ useHandCursor: true }).on("pointerdown", () => {
+    this.createButton(width / 2, height * 0.88, "← BACK", 0x37474f, 0x546e7a, () => {
       this.clearInputs();
       this.scene.start("MainMenuScene");
     });
+
+    // Version label
+    this.add.text(width / 2, height * 0.95, GAME_VERSION, {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "14px",
+      color: "#78909c",
+    }).setOrigin(0.5);
 
     // Title
     this.add.text(width / 2, 56, "❄  JOIN OR HOST  ❄", {

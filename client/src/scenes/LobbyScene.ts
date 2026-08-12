@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { GAME_VERSION } from "../version";
 import * as Colyseus from "@colyseus/sdk";
 import { sendStartGame, leaveRoom } from "../network/GameClient";
 
@@ -127,6 +128,13 @@ export class LobbyScene extends Phaser.Scene {
         color: "#78909c",
       }).setOrigin(0.5);
     }
+
+    // Version label
+    this.add.text(width / 2, height * 0.95, GAME_VERSION, {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "14px",
+      color: "#78909c",
+    }).setOrigin(0.5);
 
     // ── Room state listeners ─────────────────────────────────────────────────
     this.room.onMessage("error", (data: { msg: string }) => {
